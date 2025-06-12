@@ -30,8 +30,15 @@
   <div class="card">
     <h2 class="text-2xl font-bold text-center mb-4">Grafik PDRB Wilayah Metropolitan</h2>
     <div class="flex justify-center gap-4 mb-4">
-      <select id="wilayahSelect" multiple size="6" class="border px-3 py-2 rounded w-full max-w-md">
-      </select>
+      <select id="wilayahSelect" multiple size="6" class="border px-3 py-2 rounded w-full max-w-md"></select>
+    </div>
+    <div class="flex justify-center gap-4 mb-6 items-center">
+      <label for="startYear">Dari Tahun:</label>
+      <input type="range" id="startYear" min="2002" max="2023" value="2002" class="w-32">
+      <span id="startYearLabel">2002</span>
+      <label for="endYear">Sampai Tahun:</label>
+      <input type="range" id="endYear" min="2002" max="2023" value="2023" class="w-32">
+      <span id="endYearLabel">2023</span>
     </div>
     <div id="line-chart"></div>
   </div>
@@ -39,21 +46,14 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
     const labels = [2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
-
-    const datasets = [
-      {label: "Wilayah Metropolitan Medan", data: [99389.75,104351.45,101203.5,107429.25,114720.73,122665.16,130581.01,138559.71,147846,157931,168488,179348,190864,201436,213334,225187,237801,251170,246512,252607.92,264389.77,276817.86]},
-      {label: "Wilayah Metropolitan Palembang", data: [49437.59,60255.2,62426.03,66403.12,70815.66,75616.14,80470.85,84892.45,90358,96124,103220,109451,115234,121366,128109,135601,143772,151945,151764,156702.44,164842.37,172759.58]},
-      {label: "Wilayah Metropolitan Jakarta Raya", data: [996467.86,1048313.66,1108339.88,1174953.87,1249726.87,1331179.97,1418701.06,1508766.41,1609847.28,1731939.67,1868619.52,2013881.2,2170086.41,2330610.66,2500320.61,2678105.87,2866010.64,3064753.17,2963587.17,3066783.58,3232916.68,3394731.87]},
-      {label: "Wilayah Metropolitan Bandung", data: [118692.1,125719.23,133630.17,142098.69,137056.8,148265.38,156272.48,166124.93,179381.32,187482.86,203604.89,222319.84,236758.38,248365.28,262758.87,279649.86,296328.26,312933.44,305996.94,311489.78,328295.73,344008.6]},
-      {label: "Wilayah Metropolitan Semarang", data: [103431.56,109164.79,112926.73,117818.13,123509.59,129173.01,134772.52,139569.36,147306.68,157204.96,167429.63,177310.31,187421.54,198769.31,208218.39,218824.94,230003.89,241818.49,232329.77,240465.5,251969.65,264832.43]},
-      {label: "Wilayah Metropolitan Surabaya", data: [262564.09,273629.28,289201.68,306942.63,347998.84,374615.75,392670.42,410933.7,437296.57,466171.32,495732.12,530248.17,565157.21,601076.5,638647.23,675325.77,714807.87,755380.26,731916.29,758365.82,801741.47,849960.73]},
-      {label: "Wilayah Metropolitan Denpasar", data: [39214.2,39379.03,43060.66,45550.51,47995.84,51783.17,55190.84,59680.79,64842.63,70017.34,75520.21,82713.67,89538.7,96632.52,104548.24,113339.86,122910.91,133154.49,111829.62,122847.93,129158.54,136350.75]},
-      {label: "Wilayah Metropolitan Banjarbaru", data: [23306.75,25149.43,26270.42,27252.06,28072.25,29779.27,31762.89,33632.99,36294.75,39161.15,42102.31,44734.45,47861.15,51177.06,55009.87,58652.21,62518.52,66594.88,63893.28,65893.67,69497.13,73850.24]},
-      {label: "Wilayah Metropolitan Makassar", data: [41182.85,44170.06,47895.31,50999.22,54765.92,58514.45,62572.45,67204.38,72738.59,79390.97,86434.55,94352.61,103256.27,113148.24,124674.25,136187.62,148927.4,162182.97,157640.95,161588.04,169610.34,180019.94]},
-      {label: "Wilayah Metropolitan Manado", data: [26265.99,27256.38,23839.45,25172.1,26305.6,28328.28,30879.92,33149.62,36622.56,40453.07,44626.76,48961.77,53104.25,57847.76,62853.29,67724.28,72927.76,78761.15,77319.59,80206.27,84663.79,89612.91]}
-    ];
+    const datasets = [...document.querySelectorAll('script')].pop().textContent.match(/\{label:.*?\}/gs).map(d => eval('(' + d + ')'));
 
     const wilayahSelect = document.getElementById('wilayahSelect');
+    const startYear = document.getElementById('startYear');
+    const endYear = document.getElementById('endYear');
+    const startYearLabel = document.getElementById('startYearLabel');
+    const endYearLabel = document.getElementById('endYearLabel');
+
     datasets.forEach((d, i) => {
       const opt = document.createElement("option");
       opt.value = i;
@@ -63,14 +63,18 @@
     });
 
     function getSelectedDatasets() {
+      const startIdx = labels.indexOf(parseInt(startYear.value));
+      const endIdx = labels.indexOf(parseInt(endYear.value)) + 1;
       return Array.from(wilayahSelect.selectedOptions).map(opt => ({
         name: datasets[opt.value].label,
-        data: datasets[opt.value].data
+        data: datasets[opt.value].data.slice(startIdx, endIdx)
       }));
     }
 
     function renderChart() {
       const selected = getSelectedDatasets();
+      const start = parseInt(startYear.value);
+      const end = parseInt(endYear.value);
       const options = {
         chart: {
           type: 'line',
@@ -79,7 +83,7 @@
         },
         series: selected,
         xaxis: {
-          categories: labels.map(String)
+          categories: labels.filter(y => y >= start && y <= end).map(String)
         },
         stroke: {
           curve: 'smooth',
@@ -106,6 +110,15 @@
     }
 
     wilayahSelect.addEventListener("change", renderChart);
+    startYear.addEventListener("input", () => {
+      startYearLabel.textContent = startYear.value;
+      renderChart();
+    });
+    endYear.addEventListener("input", () => {
+      endYearLabel.textContent = endYear.value;
+      renderChart();
+    });
+
     renderChart();
   </script>
 </body>
