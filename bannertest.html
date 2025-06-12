@@ -3,23 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kilah Kota 3D Banner</title>
+  <title>Kilah Kota 3D Interaktif</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background: black;
     }
-
     .banner-container {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
     }
-
     .bg-banner {
       position: absolute;
       inset: 0;
@@ -28,17 +25,15 @@
       background-position: center;
       z-index: 0;
     }
-
     .layer {
       position: absolute;
-      will-change: transform;
+      width: auto;
+      z-index: 2;
     }
-
     .layer img {
-      width: 180px;
+      width: 160px;
       height: auto;
-      user-select: none;
-      pointer-events: none;
+      display: block;
     }
   </style>
 </head>
@@ -49,31 +44,42 @@
     <!-- Background -->
     <div class="bg-banner"></div>
 
-    <!-- Ikon 1 -->
-    <div class="layer" style="top: 20%; left: 10%; z-index: 2;"
-         data-tilt data-tilt-max="15" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+    <!-- Layer 1 -->
+    <div class="layer tilt" style="top: 20%; left: 10%;"
+         data-tilt data-tilt-max="15" data-tilt-glare="true" data-tilt-max-glare="0.2">
       <img src="ikon1.png" alt="ikon1">
     </div>
 
-    <!-- Ikon 2 -->
-    <div class="layer" style="top: 40%; left: 70%; z-index: 2;"
-         data-tilt data-tilt-max="20" data-tilt-speed="500" data-tilt-glare="true" data-tilt-max-glare="0.3">
+    <!-- Layer 2 -->
+    <div class="layer tilt" style="top: 45%; left: 65%;"
+         data-tilt data-tilt-max="20" data-tilt-glare="true" data-tilt-max-glare="0.3">
       <img src="ikon2.png" alt="ikon2">
     </div>
 
-    <!-- Ikon 3 -->
-    <div class="layer" style="top: 60%; left: 30%; z-index: 3;"
-         data-tilt data-tilt-max="10" data-tilt-speed="300" data-tilt-glare="true" data-tilt-max-glare="0.1">
+    <!-- Layer 3 -->
+    <div class="layer tilt" style="top: 65%; left: 30%;"
+         data-tilt data-tilt-max="10" data-tilt-glare="true" data-tilt-max-glare="0.1">
       <img src="ikon3.png" alt="ikon3">
     </div>
 
-    <!-- Teks -->
+    <!-- Static Text -->
     <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white z-10">
       <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">Kilah Kota</h1>
       <p class="text-xl md:text-2xl max-w-2xl">Inisiatif cerdas berbasis data untuk kota berkelanjutan</p>
     </div>
-
   </div>
+
+  <!-- Init Vanilla Tilt -->
+  <script>
+    VanillaTilt.init(document.querySelectorAll(".tilt"), {
+      max: 20,
+      speed: 400,
+      glare: true,
+      "max-glare": 0.3,
+      perspective: 1000,
+      scale: 1.05
+    });
+  </script>
 
 </body>
 </html>
