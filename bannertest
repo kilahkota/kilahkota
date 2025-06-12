@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kilah Kota</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+  <style>
+    .tilt-wrapper {
+      will-change: transform;
+      transition: transform 0.2s ease-out;
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+    .tilt-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-black text-white font-sans">
+
+  <!-- Banner dengan Vanilla Tilt -->
+  <section class="relative h-screen bg-black flex items-center justify-center overflow-hidden">
+    <div class="tilt-wrapper w-full h-full relative" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-glare="true" data-tilt-max-glare="0.3">
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('banner.png');">
+        <div class="w-full h-full bg-black bg-opacity-60 flex flex-col justify-center items-center text-center p-4">
+          <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">Kilah Kota</h1>
+          <p class="text-xl md:text-2xl mb-4 max-w-2xl">Inisiatif cerdas yang mengolah dan menginterpretasi data untuk kota berkelanjutan</p>
+          <div class="flex flex-wrap justify-center gap-4 mt-6">
+            <a href="misi1.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 1</a>
+            <a href="misi2.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 2</a>
+            <a href="misi3.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 3</a>
+            <a href="misi4.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 4</a>
+            <a href="misi5.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 5</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Tentang -->
+  <section id="tentang" class="p-10 bg-white text-black text-center">
+    <h2 class="text-3xl font-bold mb-4">Tentang Kilah Kota</h2>
+    <p class="max-w-3xl mx-auto">Kilah Kota merupakan sebuah inisiatif berbasis data untuk mengeksplorasi isu perkotaan, menyaring informasi, dan mendorong pengambilan keputusan yang lebih cerdas dan berkelanjutan.</p>
+  </section>
+
+</body>
+</html>
