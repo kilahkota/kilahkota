@@ -1,21 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chart PDRB dengan ApexCharts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #f9fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+      max-width: 1000px;
+      margin: 3rem auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+    }
+    .card-content {
+      padding: 1rem;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="card">
-        <div class="card-content">
-            <div id="line-chart"></div>
-        </div>
+  <div class="card">
+    <h2 class="text-2xl font-bold text-center mb-4">Grafik PDRB Wilayah Metropolitan</h2>
+    <div class="flex justify-center gap-4 mb-4">
+      <select id="wilayahSelect" multiple class="border px-3 py-2 rounded w-1/2">
+        <option selected>Wilayah 1</option>
+        <option>Wilayah 2</option>
+        <option>Wilayah 3</option>
+      </select>
     </div>
+    <div id="line-chart"></div>
+  </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
+    const options = {
+      chart: {
+        type: 'line',
+        height: 400,
+        toolbar: { show: false }
+      },
+      series: [
+        {
+          name: 'PDRB Jakarta Raya',
+          data: [1000, 1200, 1300, 1500, 1700, 1900, 2100]
+        }
+      ],
+      xaxis: {
+        categories: ['2017', '2018', '2019', '2020', '2021', '2022', '2023']
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 3
+      },
+      colors: ['#6366f1'],
+      markers: {
+        size: 5
+      },
+      grid: {
+        borderColor: '#e5e7eb'
+      }
+    };
 
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="./script.js"></script>
+    const chart = new ApexCharts(document.querySelector("#line-chart"), options);
+    chart.render();
+  </script>
 </body>
 
 </html>
