@@ -10,62 +10,107 @@
 <body class="bg-white text-black font-sans p-6">
   <h1 class="text-3xl font-bold mb-6 text-center">Grafik PDRB Wilayah Metropolitan</h1>
 
-  <!-- Filter Wilayah -->
-  <div class="flex justify-center mb-6">
-    <select id="wilayahDropdown" class="border border-gray-300 px-4 py-2 rounded">
-      <!-- Opsi akan diisi otomatis oleh JS -->
-    </select>
+  <!-- Filter Wilayah (Checklist) -->
+  <div class="flex flex-wrap justify-center gap-4 mb-6" id="checkboxContainer">
+    <!-- Isi otomatis -->
+  </div>
+
+  <!-- Filter Tahun (2 Slider) -->
+  <div class="max-w-xl mx-auto mb-6 text-center">
+    <label class="font-semibold block mb-2">
+      Tampilkan dari tahun <span id="tahunAwalLabel">2002</span> hingga <span id="tahunAkhirLabel">2023</span>
+    </label>
+    <div class="flex gap-4 items-center justify-center">
+      <input type="range" id="tahunAwal" min="2002" max="2023" value="2002" class="w-full">
+      <input type="range" id="tahunAkhir" min="2002" max="2023" value="2023" class="w-full">
+    </div>
   </div>
 
   <!-- Grafik -->
-  <div class="max-w-4xl mx-auto">
-    <canvas id="chartPDRB"></canvas>
+  <div class="max-w-4xl mx-auto h-[400px]">
+    <canvas id="chartPDRB" class="w-full h-full"></canvas>
   </div>
 
   <script>
-    // Data hasil konversi dari Excel (dipersingkat)
-    const pdrbData = {
-      labels: [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023],
-      datasets: [
-        {"label":"Wilayah Metropolitan Medan","data":[99389.75,104351.45,101203.5,107429.25,114720.73,122665.16,130581.01,138559.71,147846.0,157931.0,168488.0,179348.0,190864.0,201436.0,213334.0,225187.0,237801.0,251170.0,246512.0,252607.92,264389.77,276817.86]},
-        {"label":"Wilayah Metropolitan Palembang","data":[49437.59,60255.2,62426.03,66403.12,70815.66,75435.94,80015.92,84125.57,88763.0,95163.0,103281.0,111251.0,118533.0,126633.0,135173.0,143890.0,152646.0,162342.0,161153.0,166509.89,175479.72,184761.61]},
-        {"label":"Wilayah Metropolitan Jakarta Raya","data":[996467.9,1048313.5,1108340.0,1174954.0,1249726.9,1331180.0,1418701.0,1508766.0,1609847.0,1731940.0,1868620.0,2013881.0,2170086.0,2330611.0,2500321.0,2678106.0,2866011.0,3064753.0,2963587.0,3066783.58,3232916.68,3394731.87]},
-        // (truncated: tambahkan dataset lain sesuai kebutuhan)
-      ]
-    };
+    const labels = [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+
+    const datasets = [
+      {
+        label: "Wilayah Metropolitan Medan",
+        data: [99389.75, 104351.45, 101203.5, 107429.25, 114720.73, 122665.16, 130581.01, 138559.71, 147846.0, 157931.0, 168488.0, 179348.0, 190864.0, 201436.0, 213334.0, 225187.0, 237801.0, 251170.0, 246512.0, 252607.92, 264389.77, 276817.86]
+      },
+      {
+        label: "Wilayah Metropolitan Palembang",
+        data: [49437.59, 60255.2, 62426.03, 66403.12, 70815.66, 75435.94, 80015.92, 84125.57, 88763.0, 95163.0, 103281.0, 111251.0, 118533.0, 126633.0, 135173.0, 143890.0, 152646.0, 162342.0, 161153.0, 166509.89, 175479.72, 184761.61]
+      },
+      {
+        label: "Wilayah Metropolitan Jakarta Raya",
+        data: [996467.9, 1048313.5, 1108340.0, 1174954.0, 1249726.9, 1331180.0, 1418701.0, 1508766.0, 1609847.0, 1731940.0, 1868620.0, 2013881.0, 2170086.0, 2330611.0, 2500321.0, 2678106.0, 2866011.0, 3064753.0, 2963587.0, 3066783.58, 3232916.68, 3394731.87]
+      }
+    ];
 
     const ctx = document.getElementById('chartPDRB').getContext('2d');
-    const dropdown = document.getElementById('wilayahDropdown');
+    const checkboxContainer = document.getElementById('checkboxContainer');
+    const tahunAwal = document.getElementById('tahunAwal');
+    const tahunAkhir = document.getElementById('tahunAkhir');
+    const tahunAwalLabel = document.getElementById('tahunAwalLabel');
+    const tahunAkhirLabel = document.getElementById('tahunAkhirLabel');
 
     let chartInstance;
 
-    // Populate dropdown
-    pdrbData.datasets.forEach((d, i) => {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = d.label;
-      dropdown.appendChild(opt);
+    // Isi checklist wilayah
+    datasets.forEach((d, i) => {
+      const label = document.createElement("label");
+      label.className = "flex items-center space-x-2";
+
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = i;
+      cb.checked = true;
+      cb.className = "form-checkbox text-teal-600";
+
+      cb.addEventListener('change', renderChart);
+
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(d.label));
+      checkboxContainer.appendChild(label);
     });
 
-    // Draw chart
-    function renderChart(index = 0) {
-      const dataset = pdrbData.datasets[index];
+    function renderChart() {
+      const start = parseInt(tahunAwal.value);
+      const end = parseInt(tahunAkhir.value);
+
+      // Validasi agar tahun awal tidak lebih dari tahun akhir
+      if (start > end) return;
+
+      const indexStart = labels.indexOf(start);
+      const indexEnd = labels.indexOf(end) + 1;
+
+      tahunAwalLabel.textContent = start;
+      tahunAkhirLabel.textContent = end;
+
+      const selectedIndexes = Array.from(checkboxContainer.querySelectorAll('input[type="checkbox"]:checked'))
+                                   .map(cb => parseInt(cb.value));
+
+      const selectedDatasets = selectedIndexes.map(i => ({
+        label: datasets[i].label,
+        data: datasets[i].data.slice(indexStart, indexEnd),
+        borderColor: `hsl(${i * 90}, 70%, 50%)`,
+        backgroundColor: `hsl(${i * 90}, 70%, 50%)`,
+        fill: false,
+        tension: 0.3,
+        pointRadius: 3
+      }));
+
+      const filteredLabels = labels.slice(indexStart, indexEnd);
+
       if (chartInstance) chartInstance.destroy();
 
       chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: pdrbData.labels,
-          datasets: [{
-            label: dataset.label,
-            data: dataset.data,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 2,
-            fill: false,
-            tension: 0.3,
-            pointRadius: 4,
-            pointBackgroundColor: '#0f766e',
-          }]
+          labels: filteredLabels,
+          datasets: selectedDatasets
         },
         options: {
           responsive: true,
@@ -78,11 +123,8 @@
       });
     }
 
-    dropdown.addEventListener('change', (e) => {
-      renderChart(parseInt(e.target.value));
-    });
-
-    // Initial render
+    tahunAwal.addEventListener('input', renderChart);
+    tahunAkhir.addEventListener('input', renderChart);
     renderChart();
   </script>
 </body>
