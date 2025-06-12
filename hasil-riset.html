@@ -10,9 +10,13 @@
 <body class="bg-white text-black font-sans p-6">
   <h1 class="text-3xl font-bold mb-6 text-center">Grafik PDRB Wilayah Metropolitan</h1>
 
-  <!-- Filter Wilayah (Checklist) -->
-  <div class="flex flex-wrap justify-center gap-4 mb-6" id="checkboxContainer">
-    <!-- Isi otomatis -->
+  <!-- Filter Wilayah (Multiselect Dropdown) -->
+  <div class="max-w-xl mx-auto mb-6 text-center">
+    <label for="wilayahSelect" class="block font-semibold mb-2">Pilih Wilayah Metropolitan:</label>
+    <select id="wilayahSelect" multiple size="3" class="w-full border border-gray-300 px-4 py-2 rounded">
+      <!-- Diisi oleh JS -->
+    </select>
+    <p class="text-sm text-gray-500 mt-1">Gunakan Ctrl (Windows) atau Command (Mac) untuk pilih lebih dari satu.</p>
   </div>
 
   <!-- Filter Tahun (2 Slider) -->
@@ -50,7 +54,7 @@
     ];
 
     const ctx = document.getElementById('chartPDRB').getContext('2d');
-    const checkboxContainer = document.getElementById('checkboxContainer');
+    const wilayahSelect = document.getElementById('wilayahSelect');
     const tahunAwal = document.getElementById('tahunAwal');
     const tahunAkhir = document.getElementById('tahunAkhir');
     const tahunAwalLabel = document.getElementById('tahunAwalLabel');
@@ -58,39 +62,32 @@
 
     let chartInstance;
 
-    // Isi checklist wilayah
+    // Isi dropdown wilayah
     datasets.forEach((d, i) => {
-      const label = document.createElement("label");
-      label.className = "flex items-center space-x-2";
-
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.value = i;
-      cb.checked = true;
-      cb.className = "form-checkbox text-teal-600";
-
-      cb.addEventListener('change', renderChart);
-
-      label.appendChild(cb);
-      label.appendChild(document.createTextNode(d.label));
-      checkboxContainer.appendChild(label);
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = d.label;
+      opt.selected = true;
+      wilayahSelect.appendChild(opt);
     });
+
+    function getSelectedWilayahIndexes() {
+      return Array.from(wilayahSelect.selectedOptions).map(opt => parseInt(opt.value));
+    }
 
     function renderChart() {
       const start = parseInt(tahunAwal.value);
       const end = parseInt(tahunAkhir.value);
-
-      // Validasi agar tahun awal tidak lebih dari tahun akhir
       if (start > end) return;
-
-      const indexStart = labels.indexOf(start);
-      const indexEnd = labels.indexOf(end) + 1;
 
       tahunAwalLabel.textContent = start;
       tahunAkhirLabel.textContent = end;
 
-      const selectedIndexes = Array.from(checkboxContainer.querySelectorAll('input[type="checkbox"]:checked'))
-                                   .map(cb => parseInt(cb.value));
+      const indexStart = labels.indexOf(start);
+      const indexEnd = labels.indexOf(end) + 1;
+
+      const selectedIndexes = getSelectedWilayahIndexes();
+      const filteredLabels = labels.slice(indexStart, indexEnd);
 
       const selectedDatasets = selectedIndexes.map(i => ({
         label: datasets[i].label,
@@ -99,10 +96,8 @@
         backgroundColor: `hsl(${i * 90}, 70%, 50%)`,
         fill: false,
         tension: 0.3,
-        pointRadius: 3
+        pointRadius: 4
       }));
-
-      const filteredLabels = labels.slice(indexStart, indexEnd);
 
       if (chartInstance) chartInstance.destroy();
 
@@ -123,9 +118,15 @@
       });
     }
 
+    // Event listeners
+    wilayahSelect.addEventListener('change', renderChart);
     tahunAwal.addEventListener('input', renderChart);
     tahunAkhir.addEventListener('input', renderChart);
+
     renderChart();
   </script>
 </body>
+  <section id="tentang" class="p-10 bg-white text-black text-center">
+    <p class="max-w-3xl mx-auto">Hasil Riset internal</p>
+  </section>
 </html>
