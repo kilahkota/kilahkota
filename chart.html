@@ -63,7 +63,10 @@
     });
 
     function getSelectedDatasets() {
-      return Array.from(wilayahSelect.selectedOptions).map(opt => datasets[opt.value]);
+      return Array.from(wilayahSelect.selectedOptions).map(opt => ({
+        name: datasets[opt.value].label,
+        data: datasets[opt.value].data
+      }));
     }
 
     function renderChart() {
@@ -88,6 +91,11 @@
         },
         grid: {
           borderColor: '#e5e7eb'
+        },
+        legend: {
+          show: true,
+          position: 'top',
+          horizontalAlign: 'center'
         }
       };
 
