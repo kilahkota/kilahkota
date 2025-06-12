@@ -8,7 +8,7 @@
   <style>
     #banner-container {
       perspective: 1000px;
-      height: 100vh;
+      min-height: 100vh;
       position: relative;
       overflow: hidden;
     }
@@ -38,8 +38,9 @@
     #layer3 { top: 60%; left: 30%; z-index: 3; }
   </style>
 </head>
-<body class="bg-black">
+<body class="bg-black text-white">
 
+  <!-- Banner Parallax -->
   <section id="banner-container">
     <div id="layer-bg" class="layer"></div>
 
@@ -59,13 +60,22 @@
     </div>
   </section>
 
+  <!-- Konten Tambahan -->
+  <section id="content-bawah" class="relative z-10 bg-white text-black py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-4">Konten Setelah Banner</h2>
+      <p>Ini adalah bagian setelah efek parallax. Kamu bisa menambahkan informasi, grafik, atau komponen Tailwind lainnya di sini tanpa terganggu oleh animasi di atas.</p>
+    </div>
+  </section>
+
   <script>
     const container = document.getElementById("banner-container");
     const layers = document.querySelectorAll(".layer");
 
     container.addEventListener("mousemove", (e) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
 
       layers.forEach((layer, index) => {
         const depth = (index + 1) * 10;
