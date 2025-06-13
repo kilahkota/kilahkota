@@ -81,5 +81,27 @@
     <h2 class="text-3xl font-bold mb-4">Tentang Kilah Kota</h2>
     <p class="max-w-3xl mx-auto">Kilah Kota merupakan sebuah inisiatif berbasis data untuk mengeksplorasi isu perkotaan, menyaring informasi, dan mendorong pengambilan keputusan yang lebih cerdas dan berkelanjutan.</p>
   </section>
+
+  <script>
+    const container = document.getElementById("banner-container");
+    const layers = document.querySelectorAll(".layer");
+
+    container.addEventListener("mousemove", (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      layers.forEach((layer, index) => {
+        const depth = (index + 1) * 10;
+        layer.style.transform = `translateX(${x * depth}px) translateY(${y * depth}px)`;
+      });
+    });
+
+    container.addEventListener("mouseleave", () => {
+      layers.forEach((layer) => {
+        layer.style.transform = "translateX(0) translateY(0)";
+      });
+    });
+  </script>
 </body>
 </html>
