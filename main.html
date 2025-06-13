@@ -1,64 +1,85 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kilah Kota</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Banner 3D PNG Hover</title>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-white text-black font-sans">
+  <style>
+    #banner-container {
+      perspective: 1000px;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
 
+    .layer {
+      position: absolute;
+      transition: transform 0.2s ease-out;
+      will-change: transform;
+    }
+
+    #layer-bg {
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('banner.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+    }
+
+    .layer img {
+      max-width: 200px;
+    }
+
+    #layer1 { top: 20%; left: 10%; z-index: 2; }
+    #layer2 { top: 40%; left: 70%; z-index: 2; }
+    #layer3 { top: 60%; left: 30%; z-index: 3; }
+  </style>
+</head>
+<body class="bg-black text-white">
+
+  <!-- Banner Parallax -->
+  <section id="banner-container">
+    <div id="layer-bg" class="layer"></div>
+
+    <!-- PNG Layer 1 -->
+    <div id="layer1" class="layer">
+      <img src="ikon1.png" alt="ikon 1">
+    </div>
+
+    <!-- PNG Layer 2 -->
+    <div id="layer2" class="layer">
+      <img src="ikon2.png" alt="ikon 2">
+    </div>
+
+    <!-- PNG Layer 3 -->
+    <div id="layer3" class="layer">
+      <img src="ikon3.png" alt="ikon 3">
+    </div>
+  </section>
+<body class="bg-black text-white font-sans">
   <!-- Hero Banner Section -->
   <section class="relative h-screen w-full bg-cover bg-center" style="background-image: url('banner.png')">
-  <div class="absolute inset-0 bg-white bg-opacity-50 flex flex-col justify-center items-center text-center p-4">
+  <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center text-center p-4">
     <h1 class="text-5xl md:text-7xl font-bold mb-4 drop-shadow-lg">Kilah Kota</h1>
-    <p class="text-xl bg-white bg-opacity-50 md:text-2xl mb-4 max-w-2xl">Inisiatif cerdas yang mengolah dan menginterpretasi data untuk kota berkelanjutan</p>
-
+    <p class="text-xl md:text-2xl mb-4 max-w-2xl">Inisiatif cerdas yang mengolah dan menginterpretasi data untuk kota berkelanjutan</p>
+    
     <!-- Tombol Sejajar -->
       <div class="flex flex-wrap justify-center gap-4 mt-6">
-        <a href="misi1.html" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 1</a>
-        <a href="misi2.html" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 2</a>
-        <a href="misi3.html" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 3</a>
-        <a href="misi4.html" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 4</a>
-        <a href="misi5.html" class="bg-black text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 5</a>
+        <a href="misi1.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 1</a>
+        <a href="misi2.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 2</a>
+        <a href="misi3.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 3</a>
+        <a href="misi4.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 4</a>
+        <a href="misi5.html" class="bg-white text-black px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition">Misi 5</a>
       </div>
-
-    <!-- Tombol Ikon Gambar Menuju Halaman Riset -->
-    <div class="flex justify-center gap-6 mt-6">
-      <a href="hasil-riset.html" class="block w-28 h-28 rounded-xl overflow-hidden shadow-lg hover:drop-shadow-lg transition duration-300">
-      <img src="icon-riset.png" alt="Riset" class="object-cover w-full h-full">
-      </a>
-      <a href="dataset.html" class="block w-28 h-28 rounded-xl overflow-hidden shadow-lg hover:drop-shadow-lg transition duration-300">
-      <img src="icon-dataset.png" alt="Dataset" class="object-cover w-full h-full">
-      </a>
-    </div>
   </div>
 </section>
 
-    <!-- Tombol Ikon -->
-      <div class="flex justify-center gap-6 mt-3">
-        <a href="https://instagram.com" target="_blank" class="text-white hover:text-gray-300 transition" aria-label="Instagram">
-        <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm4.25 3a5.25 5.25 0 1 1 0 10.5a5.25 5.25 0 0 1 0-10.5Zm0 1.5a3.75 3.75 0 1 0 0 7.5a3.75 3.75 0 0 0 0-7.5Zm5.38-.38a.88.88 0 1 1 0 1.75a.88.88 0 0 1 0-1.75Z"/>
-        </svg>
-        </a>
-        <a href="mailto:kilahkota@gmail.com" class="text-white hover:text-gray-300 transition" aria-label="Email">
-        <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M2 4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v1.38l-10 6.25L2 5.38V4Zm0 3.12V20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7.12l-9.24 5.77a1.5 1.5 0 0 1-1.52 0L2 7.12Z"/>
-        </svg>
-        </a>
-        <a href="https://wa.me/6281234567890" target="_blank" class="text-white hover:text-gray-300 transition" aria-label="WhatsApp">
-        <svg class="w-8 h-8 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M20.52 3.48a12.13 12.13 0 0 0-17.14 0A11.92 11.92 0 0 0 1.8 12.05a11.93 11.93 0 0 0 1.71 6.2l-1.1 4.04 4.16-1.09a12.11 12.11 0 0 0 5.48 1.37h.05c6.64 0 12.05-5.41 12.05-12.05a11.9 11.9 0 0 0-3.63-8.65Zm-8.47 17.3a10.28 10.28 0 0 1-5.22-1.42l-.37-.22-2.47.65.66-2.41-.24-.39a10.3 10.3 0 0 1 1.51-12.66a10.32 10.32 0 0 1 14.6 0a10.3 10.3 0 0 1 0 14.58a10.3 10.3 0 0 1-7.97 3.87Zm5.65-7.67c-.3-.15-1.77-.87-2.04-.97c-.27-.1-.46-.15-.65.15c-.2.3-.74.96-.91 1.15c-.17.2-.33.22-.63.07a8.42 8.42 0 0 1-2.48-1.53a9.34 9.34 0 0 1-1.72-2.14c-.18-.3-.02-.46.13-.61c.14-.14.3-.34.44-.5c.15-.15.2-.26.3-.44c.1-.18.05-.34-.02-.5c-.07-.15-.65-1.57-.89-2.15c-.23-.56-.46-.49-.65-.5h-.55c-.2 0-.5.07-.76.34c-.26.26-1 1-.99 2.43s1 2.83 1.13 3.02c.15.2 1.96 3.2 4.76 4.5c.67.29 1.2.47 1.61.6c.68.22 1.3.19 1.79.11c.55-.08 1.77-.72 2.03-1.42c.25-.7.25-1.3.17-1.42c-.07-.1-.27-.17-.56-.3Z"/>
-        </svg>
-        </a>
-      </div>
-
-<!-- Section berikutnya -->
-<section id="tentang" class="p-10 bg-white text-black text-center">
-      <h2 class="text-3xl font-bold mb-4">Tentang Kilah Kota</h2>
-      <p class="max-w-3xl mx-auto">Kilah Kota merupakan sebuah inisiatif berbasis data untuk mengeksplorasi isu perkotaan, menyaring informasi, dan mendorong pengambilan keputusan yang lebih cerdas dan berkelanjutan.</p>
-</section>
+  <!-- Section berikutnya -->
+  <section id="tentang" class="p-10 bg-white text-black text-center">
+    <h2 class="text-3xl font-bold mb-4">Tentang Kilah Kota</h2>
+    <p class="max-w-3xl mx-auto">Kilah Kota merupakan sebuah inisiatif berbasis data untuk mengeksplorasi isu perkotaan, menyaring informasi, dan mendorong pengambilan keputusan yang lebih cerdas dan berkelanjutan.</p>
+  </section>
 </body>
 </html>
